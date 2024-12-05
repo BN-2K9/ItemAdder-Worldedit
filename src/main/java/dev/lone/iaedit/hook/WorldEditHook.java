@@ -9,6 +9,7 @@ import dev.lone.iaedit.hook.delegate.WeCustomBlocksDelegate;
 import dev.lone.iaedit.hook.listener.FaweListener;
 import dev.lone.iaedit.hook.listener.WorldEditListener;
 import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.CustomBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;

@@ -13,6 +13,7 @@ import com.sk89q.worldedit.world.block.BlockTypes;
 import dev.lone.iaedit.Main;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.ItemsAdder;
+import org.enginehub.linbus.tree.LinCompoundTag;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -52,7 +53,8 @@ public class CustomBlocksInputParser extends InputParser<BaseBlock>
                 blockType == BlockTypes.RED_MUSHROOM_BLOCK ||
                 blockType == BlockTypes.CHORUS_PLANT ||
                 blockType == BlockTypes.TRIPWIRE ||
-                blockType == BlockTypes.SPAWNER
+                blockType == BlockTypes.SPAWNER ||
+                blockType == BlockTypes.BARRIER
         ;
     }
 
@@ -61,7 +63,7 @@ public class CustomBlocksInputParser extends InputParser<BaseBlock>
     {
         if (input.isEmpty())
             return Stream.empty();
-        return ItemsAdder.getNamespacedBlocksNamesInConfig(input).stream();
+        return CustomBlock.getNamespacedIdsInRegistry().stream();
     }
 
     @Override
@@ -80,10 +82,10 @@ public class CustomBlocksInputParser extends InputParser<BaseBlock>
             try
             {
                 BlockType blockType;
-                if (customBlock.getBaseBlockData() == null) // Dirty, it may cause issues.
+                if (customBlock.getItemStack() == null) // Dirty, it may cause issues.
                     blockType = BlockTypes.SPAWNER; // Dirty, it may cause issues.
                 else
-                    blockType = BlockTypes.get("minecraft:" + customBlock.getBaseBlockData().getMaterial().toString().toLowerCase(Locale.ROOT));
+                    blockType = BlockTypes.get("minecraft:" + customBlock.getItemStack().getType().toString().toLowerCase(Locale.ROOT));
 
                 BlockState blockState;
                 if (blockType == null)
@@ -94,7 +96,7 @@ public class CustomBlocksInputParser extends InputParser<BaseBlock>
                 HashMap<String, Tag> attributes = new HashMap<>();
                 attributes.put("IABlock", new StringTag(input));
 
-                return (BaseBlock) BASEBLOCK_CONSTRUCTOR.newInstance(blockState, new CompoundTag(attributes));
+                return (BaseBlock) BASEBLOCK_CONSTRUCTOR.newInstance(blockState, new com.sk89q.jchronic.tags.Tag<>(attributes));
             }
             catch (IllegalAccessException | InvocationTargetException | InstantiationException e)
             {

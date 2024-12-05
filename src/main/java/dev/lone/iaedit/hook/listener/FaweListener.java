@@ -19,8 +19,9 @@ public class FaweListener implements Listener
     }
 
     @Subscribe(priority = com.sk89q.worldedit.util.eventbus.EventHandler.Priority.VERY_LATE)
-    public void onEditSession(EditSessionEvent e)
+    public void onEditSessionEvent(EditSessionEvent e)
     {
+        Bukkit.getLogger().info("Fired Event");
         if(e.getStage() != EditSession.Stage.BEFORE_CHANGE)
             return;
 
